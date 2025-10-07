@@ -49,6 +49,7 @@ import { CoreModule } from "@app/core";
     ]),
     SharedModule,
     CoreModule,
+    NationalAccountingModule,
   ],
   controllers: [ProgrammeController, NationalAccountingController],
   providers: [Logger, AggregateAPIService, AggregateSlAPIService],

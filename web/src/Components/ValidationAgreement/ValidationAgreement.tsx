@@ -28,6 +28,7 @@ import LabelWithTooltip from "../LabelWithTooltip/LabelWithTooltip";
 import { Loading } from "../Loading/loading";
 import { API_PATHS } from "../../Config/apiConfig";
 import { ROUTES } from "../../Config/uiRoutingConfig";
+import { setDemoFormValues, DEMO_MODE } from "../../Utils/demoData";
 
 const ValidationAgreement = (props: { translator: i18n }) => {
   const { translator } = props;
@@ -149,6 +150,15 @@ const ValidationAgreement = (props: { translator: i18n }) => {
       setLoading(false);
     }
   };
+
+  // Auto-fill form with demo data for customer presentations
+  useEffect(() => {
+    if (DEMO_MODE && !isView) {
+      setTimeout(() => {
+        setDemoFormValues(form, 'validationAgreement');
+      }, 500);
+    }
+  }, []);
 
   useEffect(() => {
     const getViewData = async () => {

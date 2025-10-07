@@ -30,6 +30,7 @@ import { Loading } from "../Loading/loading";
 import { DocumentTypeEnum } from "../../Definitions/Enums/document.type";
 import { API_PATHS } from "../../Config/apiConfig";
 import { ROUTES } from "../../Config/uiRoutingConfig";
+import { setDemoFormValues, DEMO_MODE } from "../../Utils/demoData";
 
 const ProjectProposalComponent = (props: { translator: i18n }) => {
   const { translator } = props;
@@ -203,6 +204,15 @@ const ProjectProposalComponent = (props: { translator: i18n }) => {
       console.log(error);
     }
   };
+
+  // Auto-fill form with demo data for customer presentations
+  useEffect(() => {
+    if (DEMO_MODE && !isView) {
+      setTimeout(() => {
+        setDemoFormValues(form, 'projectProposal');
+      }, 500);
+    }
+  }, []);
 
   useEffect(() => {
     getCountryList();

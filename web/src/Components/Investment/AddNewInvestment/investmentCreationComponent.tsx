@@ -44,6 +44,7 @@ import { useUserContext } from '../../../Context/UserInformationContext/userInfo
 import { ProgrammeStageUnified } from '../../../Definitions/Enums/programmeStage.enum';
 import { TooltipColor } from '../../../Styles/role.color.constants';
 import { API_PATHS } from '../../../Config/apiConfig';
+import { setDemoFormValues, DEMO_MODE } from '../../../Utils/demoData';
 const { RangePicker } = DatePicker;
 
 export const InvestmentCreationComponent = (props: any) => {
@@ -306,6 +307,15 @@ export const InvestmentCreationComponent = (props: any) => {
       setData(state?.record);
     } else {
       setData({ ownership: true });
+    }
+  }, []);
+
+  // Auto-fill form with demo data for customer presentations
+  useEffect(() => {
+    if (DEMO_MODE && !state?.record) {
+      setTimeout(() => {
+        setDemoFormValues(form, 'investmentCreation');
+      }, 500);
     }
   }, []);
 

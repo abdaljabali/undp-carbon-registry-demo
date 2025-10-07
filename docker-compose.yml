@@ -155,6 +155,7 @@ services:
         VITE_APP_REGISTRY_NAME: UNDP Demo Carbon Registry
         VITE_APP_MAPBOXGL_ACCESS_TOKEN: pk.eyJ1IjoicGFsaW5kYSIsImEiOiJjbGMyNTdqcWEwZHBoM3FxdHhlYTN4ZmF6In0.KBvFaMTjzzvoRCr1Z1dN_g
         VITE_APP_MAXIMUM_FILE_SIZE: 5242880
+        VITE_APP_DEMO_MODE: "true"
     ports:
       - "3030:3030"
     depends_on:

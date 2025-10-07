@@ -47,6 +47,7 @@ import { mapBase64ToFields } from "../../Utils/mapBase64ToFields";
 import validator from "validator";
 import { toMoment } from "../../Utils/convertTime";
 import { defaultTimeout } from "../../Definitions/Constants/defaultTimeout";
+import { setDemoFormValues, DEMO_MODE } from "../../Utils/demoData";
 
 type SizeType = Parameters<typeof Form>[0]["size"];
 
@@ -357,6 +358,16 @@ export const ProgrammeCreationComponent = (props: any) => {
     SECTOR_TO_SCOPES_MAP[selectedSector].length > 0;
 
   const t = translator.t;
+
+  // Auto-fill form with demo data for customer presentations
+  useEffect(() => {
+    if (DEMO_MODE && !id && !state?.record) {
+      // Only auto-fill for new programme creation, not for view/edit
+      setTimeout(() => {
+        setDemoFormValues(form, 'programme');
+      }, 500); // Small delay to ensure form is ready
+    }
+  }, []);
 
   useEffect(() => {
     const getViewData = async () => {

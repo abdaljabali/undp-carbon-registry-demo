@@ -37,6 +37,7 @@ import GetMultipleLocationsMapComponent from "../Maps/GetMultipleLocationsMapCom
 import { Loading } from "../Loading/loading";
 import { API_PATHS } from "../../Config/apiConfig";
 import { ROUTES } from "../../Config/uiRoutingConfig";
+import { setDemoFormValues, DEMO_MODE } from "../../Utils/demoData";
 
 const SiteCheckListComponent = (props: { translator: i18n }) => {
   const [form] = useForm();
@@ -114,6 +115,15 @@ const SiteCheckListComponent = (props: { translator: i18n }) => {
   const { t } = translator;
 
   const [disableFields, setDisableFields] = useState<boolean>(false);
+
+  // Auto-fill form with demo data for customer presentations
+  useEffect(() => {
+    if (DEMO_MODE) {
+      setTimeout(() => {
+        setDemoFormValues(form, 'siteChecklist');
+      }, 500);
+    }
+  }, []);
 
   useEffect(() => {
     getCountryList();

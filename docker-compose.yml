@@ -33,6 +33,7 @@ services:
       DB_HOST: db
       DB_USER: root
       DB_PASSWORD: "123456789"
+      DB_NAME: carbondev
       RUN_MODULE: national-api
       rootEmail: tnd+root@demo.com
       cfAdminEmail: tnd+root@demo.com
@@ -87,6 +88,7 @@ services:
       DB_HOST: db
       DB_USER: root
       DB_PASSWORD: "123456789"
+      DB_NAME: carbondev
       RUN_PORT: 3100
       RUN_MODULE: analytics-api
       DOMAIN_MAP: "true"
@@ -102,6 +104,7 @@ services:
       DB_HOST: db
       DB_USER: root
       DB_PASSWORD: "123456789"
+      DB_NAME: carbondev
       # ,data-importer
       RUN_MODULE: replicator,async-operations-handler
       LOCATION_SERVICE: OPENSTREET

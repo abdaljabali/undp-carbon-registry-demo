@@ -21,6 +21,7 @@ services:
       - ./init.sql:/docker-entrypoint-initdb.d/init.sql
       - data:/data/postgres
   national:
+    restart: always
     build:
       context: .
       dockerfile: ./backend/services/Dockerfile
@@ -51,11 +52,11 @@ services:
       EMAILPREFIX: ""
       LOCATION_SERVICE: FILE
       ASYNC_OPERATIONS_TYPE: Database
-      HOST: "http://localhost:3030"
+      HOST: "http://164.92.193.13:3030"
       DOMAIN_MAP: "true"
       EXPIRES_IN: "7200"
       REFRESH_TOKEN_EXPIRES_IN: "12h"
-      BACKEND_HOST: "http://192.168.1.16:3000"
+      BACKEND_HOST: "http://164.92.193.13:3000"
       CONTACT_EMAIL: countryx@email.com
       MINISTER_NAME_AND_DESIGNATION: "\nHonorable Minister X\nMinister\nMinistry of Environment, Forestry & Tourism"
       CACHE_PROJECT_TTL: 60000
@@ -73,6 +74,7 @@ services:
     volumes:
       - filestore:/app/backend/services/public
   stats:
+    restart: always
     build:
       context: .
       dockerfile: ./backend/services/Dockerfile
@@ -89,6 +91,7 @@ services:
       RUN_MODULE: analytics-api
       DOMAIN_MAP: "true"
   replicator:
+    restart: always
     build:
       context: .
       dockerfile: ./backend/services/Dockerfile
@@ -115,7 +118,7 @@ services:
       MRV_ENDPOINT: "http://192.168.123.20:9000"
       SYNC_ENABLE: false
       MRV_API_TOKEN: ""
-      BACKEND_HOST: "http://192.168.1.16:3000"
+      BACKEND_HOST: "http://164.92.193.13:3000"
     volumes:
       - filestore:/app/backend/services/public
   # async-operations-handler:
@@ -135,13 +138,14 @@ services:
   #     ASYNC_OPERATIONS_TYPE: Database
   
   web:
+    restart: always
     build:
       context: .
       dockerfile: ./web/Dockerfile
       args:
         PORT: 3030
-        VITE_APP_BACKEND: http://localhost:3000
-        VITE_APP_STAT_URL: http://localhost:3100
+        VITE_APP_BACKEND: http://164.92.193.13:3000
+        VITE_APP_STAT_URL: http://164.92.193.13:3100
         VITE_APP_COUNTRY_NAME: "CountryX"
         VITE_APP_GOVERNMENT_MINISTRY: "Ministry Of Environment"
         VITE_APP_COUNTRY_FLAG_URL: "https://carbon-common-dev.s3.amazonaws.com/flag.png"
@@ -150,7 +154,7 @@ services:
         VITE_APP_MAPBOXGL_ACCESS_TOKEN: pk.eyJ1IjoicGFsaW5kYSIsImEiOiJjbGMyNTdqcWEwZHBoM3FxdHhlYTN4ZmF6In0.KBvFaMTjzzvoRCr1Z1dN_g
         VITE_APP_DEMO_MODE: "true"
     environment:
-        VITE_APP_BACKEND: http://localhost:3000
+        VITE_APP_BACKEND: http://164.92.193.13:3000
         VITE_APP_MAP_TYPE: Mapbox
         VITE_APP_COUNTRY_NAME: CountryX
         VITE_APP_REGISTRY_NAME: UNDP Demo Carbon Registry
@@ -162,9 +166,180 @@ services:
       - db
       - national
 
-  
-
-
-
-
-  
+# ============================================================================
+# PREVIOUS CONFIGURATION (Original Local Development Settings)
+# ============================================================================
+# Modified on: October 13, 2025
+# Modified for: DigitalOcean Production Deployment at IP: 164.92.193.13
+# Changes made: Updated all localhost URLs to production IP, added restart policies
+#
+# Below is the complete original docker-compose.yml file before modifications:
+# ============================================================================
+#
+# version: "3.3"
+# volumes:
+#   data:
+#     driver: local
+#   filestore:
+#     driver: local
+# services:
+#   db:
+#     container_name: db
+#     image: postgres
+#     restart: always
+#     ports:
+#       - "5432:5432"
+#     environment:
+#       POSTGRES_PASSWORD: "123456789"
+#       POSTGRES_USER: root
+#       PSQL_USERNAME: root
+#       # POSTGRES_HOST_AUTH_METHOD: trust
+#       PGDATA: /data/postgres
+#     volumes:
+#       - ./init.sql:/docker-entrypoint-initdb.d/init.sql
+#       - data:/data/postgres
+#   national:
+#     build:
+#       context: .
+#       dockerfile: ./backend/services/Dockerfile
+#     ports:
+#       - "3000:3000"
+#     depends_on:
+#       - db
+#     environment:
+#       DB_HOST: db
+#       DB_USER: root
+#       DB_PASSWORD: "123456789"
+#       RUN_MODULE: national-api
+#       rootEmail: tnd+root@demo.com
+#       cfAdminEmail: tnd+root@demo.com
+#       exComAdminEmail: tnd+root@demo.com
+#       Ministry: ""
+#       Department: ""
+#       systemCountryCode: "NG"
+#       systemCountryName: "CountryX"
+#       systemContinentName: "CountryX"
+#       countryClimateFundName: "CountryX Climate Fund (Pvt) Ltd"
+#       name: "Antactic Region"
+#       climateFundName: "Zimbabwe Climate Fund"
+#       exComName: "Executive Committee"
+#       logoBase64: "sss"
+#       IS_EMAIL_DISABLED: "true"
+#       DISABLE_LOW_PRIORITY_EMAIL: "true"
+#       EMAILPREFIX: ""
+#       LOCATION_SERVICE: FILE
+#       ASYNC_OPERATIONS_TYPE: Database
+#       HOST: "http://localhost:3030"
+#       DOMAIN_MAP: "true"
+#       EXPIRES_IN: "7200"
+#       REFRESH_TOKEN_EXPIRES_IN: "12h"
+#       BACKEND_HOST: "http://192.168.1.16:3000"
+#       CONTACT_EMAIL: countryx@email.com
+#       MINISTER_NAME_AND_DESIGNATION: "\nHonorable Minister X\nMinister\nMinistry of Environment, Forestry & Tourism"
+#       CACHE_PROJECT_TTL: 60000
+#       CACHE_PROJECT_MAX: 100
+#       CACHE_RETIREMENT_TTL: 60000
+#       CACHE_RETIREMENT_MAX: 100
+#       CACHE_ORGANISATION_TTL: 60000
+#       CACHE_ORGANISATION_MAX: 100
+#       RATE_LIMIT_PROJECT_LIMIT: 100
+#       RATE_LIMIT_PROJECT_DURATION: 60
+#       RATE_LIMIT_RETIREMENT_LIMIT: 100
+#       RATE_LIMIT_RETIREMENT_DURATION: 60
+#       RATE_LIMIT_ORGANISATION_LIMIT: 100
+#       RATE_LIMIT_ORGANISATION_DURATION: 60
+#     volumes:
+#       - filestore:/app/backend/services/public
+#   stats:
+#     build:
+#       context: .
+#       dockerfile: ./backend/services/Dockerfile
+#     ports:
+#       - "3100:3100"
+#     depends_on:
+#       - db
+#       - national
+#     environment:
+#       DB_HOST: db
+#       DB_USER: root
+#       DB_PASSWORD: "123456789"
+#       RUN_PORT: 3100
+#       RUN_MODULE: analytics-api
+#       DOMAIN_MAP: "true"
+#   replicator:
+#     build:
+#       context: .
+#       dockerfile: ./backend/services/Dockerfile
+#     depends_on:
+#       - db
+#       - national
+#     environment:
+#       DB_HOST: db
+#       DB_USER: root
+#       DB_PASSWORD: "123456789"
+#       # ,data-importer
+#       RUN_MODULE: replicator,async-operations-handler
+#       LOCATION_SERVICE: OPENSTREET
+#       SMTP_ENDPOINT: email-smtp.us-east-1.amazonaws.com
+#       SMTP_USERNAME: AKIAUMXKTXDJEQ555F4J
+#       SMTP_PASSWORD: ""
+#       IS_EMAIL_DISABLED: "true"
+#       DISABLE_LOW_PRIORITY_EMAIL: "true"
+#       EMAILPREFIX: ""
+#       ASYNC_OPERATIONS_TYPE: Database
+#       ITMO_API_KEY: ""
+#       ITMO_EMAIL: ""
+#       ITMO_PASSWORD: ""
+#       MRV_ENDPOINT: "http://192.168.123.20:9000"
+#       SYNC_ENABLE: false
+#       MRV_API_TOKEN: ""
+#       BACKEND_HOST: "http://192.168.1.16:3000"
+#     volumes:
+#       - filestore:/app/backend/services/public
+#   # async-operations-handler:
+#   #   build:
+#   #     context: .
+#   #     dockerfile: ./backend/services/Dockerfile
+#   #   depends_on:
+#   #     - db
+#   #     - national
+#   #   environment:
+#   #     DB_HOST: db
+#   #     DB_USER: root
+#   #     DB_PASSWORD: "<ANY PASSOWORD>"
+#   #     RUN_MODULE: async-operations-handler
+#   #     SMTP_ENDPOINT: email-smtp.us-east-1.amazonaws.com
+#   #     SMTP_PASSWORD: "<ANY PASSOWORD>"
+#   #     ASYNC_OPERATIONS_TYPE: Database
+#   
+#   web:
+#     build:
+#       context: .
+#       dockerfile: ./web/Dockerfile
+#       args:
+#         PORT: 3030
+#         VITE_APP_BACKEND: http://localhost:3000
+#         VITE_APP_STAT_URL: http://localhost:3100
+#         VITE_APP_COUNTRY_NAME: "CountryX"
+#         VITE_APP_GOVERNMENT_MINISTRY: "Ministry Of Environment"
+#         VITE_APP_COUNTRY_FLAG_URL: "https://carbon-common-dev.s3.amazonaws.com/flag.png"
+#         VITE_APP_COUNTRY_CODE: "NG"
+#         VITE_APP_MAP_TYPE: "Mapbox"
+#         VITE_APP_MAPBOXGL_ACCESS_TOKEN: pk.eyJ1IjoicGFsaW5kYSIsImEiOiJjbGMyNTdqcWEwZHBoM3FxdHhlYTN4ZmF6In0.KBvFaMTjzzvoRCr1Z1dN_g
+#         VITE_APP_DEMO_MODE: "true"
+#     environment:
+#         VITE_APP_BACKEND: http://localhost:3000
+#         VITE_APP_MAP_TYPE: Mapbox
+#         VITE_APP_COUNTRY_NAME: CountryX
+#         VITE_APP_REGISTRY_NAME: UNDP Demo Carbon Registry
+#         VITE_APP_MAPBOXGL_ACCESS_TOKEN: pk.eyJ1IjoicGFsaW5kYSIsImEiOiJjbGMyNTdqcWEwZHBoM3FxdHhlYTN4ZmF6In0.KBvFaMTjzzvoRCr1Z1dN_g
+#         VITE_APP_MAXIMUM_FILE_SIZE: 5242880
+#     ports:
+#       - "3030:3030"
+#     depends_on:
+#       - db
+#       - national
+#
+# ============================================================================
+# END OF PREVIOUS CONFIGURATION
+# ============================================================================

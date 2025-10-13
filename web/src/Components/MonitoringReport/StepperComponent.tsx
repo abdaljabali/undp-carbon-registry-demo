@@ -41,6 +41,7 @@ import { mapBase64ToFields } from "../../Utils/mapBase64ToFields";
 import { INF_SECTORAL_SCOPE } from "../AddNewProgramme/ProgrammeCreationComponent";
 import { safeClone } from "../../Utils/deepCopy";
 import { defaultTimeout } from "../../Definitions/Constants/defaultTimeout";
+import { DEMO_MODE, demoData } from "../../Utils/demoData";
 
 const StepperComponent = (props: CustomStepsProps) => {
   const navigate = useNavigate();
@@ -93,6 +94,37 @@ const StepperComponent = (props: CustomStepsProps) => {
     documentType: DocumentEnum.MONITORING,
     data: {},
   });
+
+  // Auto-fill Monitoring Report with demo data for customer presentations
+  useEffect(() => {
+    if (DEMO_MODE && state?.mode === FormMode.CREATE) {
+      setTimeout(() => {
+        const monitoringDemoData = {
+          ...demoData.monitoringReport,
+          // Convert ALL date fields to moment objects
+          bi_completionDate: moment().add(30, 'days'),
+          pa_projectCreditingPeriod: moment(), // START date (today)
+          pa_projectCreditingPeriodEndDate: moment().add(6, 'years'), // END date
+
+          vintage: moment('2024', 'YYYY'), // Convert vintage year to moment object
+        };
+        
+        console.log('DEMO: Setting monitoring demo data:', monitoringDemoData.projectParticipants);
+        
+        // Set demo data on all forms
+        basicInformationForm.setFieldsValue(monitoringDemoData);
+        projectActivityForm.setFieldsValue(monitoringDemoData);
+        implementationStatusForm.setFieldsValue(monitoringDemoData);
+        descriptionOfMonitoringForm.setFieldsValue(monitoringDemoData);
+        dataAndParametersForm.setFieldsValue(monitoringDemoData);
+        qualificationForm.setFieldsValue(monitoringDemoData);
+        annexuresForm.setFieldsValue(monitoringDemoData);
+        
+        // Log what was actually set
+        console.log('DEMO: projectParticipants in form:', projectActivityForm.getFieldValue('projectParticipants'));
+      }, 1500); // Increased timeout to 1.5 seconds
+    }
+  }, [state?.mode]);
 
   const scrollToDiv = () => {
     if (scrollSection.current) {
@@ -433,13 +465,16 @@ const StepperComponent = (props: CustomStepsProps) => {
   console.log("----------state disableFields-------------", disableFields);
 
   useEffect(() => {
-    if (state?.mode === FormMode?.CREATE) {
+    if (state?.mode === FormMode?.CREATE && !DEMO_MODE) {
+      // In demo mode, skip fetchAndSetData - use demo data instead
       fetchAndSetData(id);
       //setLatestVersion();
+      
+      // Only set empty projectParticipants if NOT in demo mode
+      projectActivityForm.setFieldValue("projectParticipants", [
+        { partiesInvolved: "", projectParticipants: [{ participant: "" }] },
+      ]);
     }
-    projectActivityForm.setFieldValue("projectParticipants", [
-      { partiesInvolved: "", projectParticipants: [{ participant: "" }] },
-    ]);
   }, []);
 
   const steps = [

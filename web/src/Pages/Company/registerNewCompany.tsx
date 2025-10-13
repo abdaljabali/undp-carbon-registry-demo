@@ -3,7 +3,7 @@ import { useTranslation } from "react-i18next";
 // import { AddNewCompanyComponent } from '@undp/carbon-library';
 import "./registerNewCompany.scss";
 import { Row, Col, Button } from "antd";
-import sliderLogo from "../../Assets/Images/logo-slider.png";
+import sliderLogo from "../../Assets/Images/tnd-logo.png";
 import { AddNewCompanyComponent } from "../../Components/Company/AddNewCompany/addNewCompanyComponent";
 import { ROUTES } from "../../Config/uiRoutingConfig";
 

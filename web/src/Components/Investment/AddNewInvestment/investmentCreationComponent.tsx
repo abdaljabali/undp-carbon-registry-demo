@@ -314,7 +314,7 @@ export const InvestmentCreationComponent = (props: any) => {
   useEffect(() => {
     if (DEMO_MODE && !state?.record) {
       setTimeout(() => {
-        setDemoFormValues(form, 'investmentCreation');
+        setDemoFormValues(formOne, 'investmentCreation');
       }, 500);
     }
   }, []);

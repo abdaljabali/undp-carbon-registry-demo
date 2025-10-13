@@ -9,6 +9,7 @@ import { Col, Row, Select, Tag, Form } from 'antd';
 import { FormMode } from '../../Definitions/Enums/formMode.enum';
 import { getDocumentStatusColor } from '../../Definitions/Definitions/programme.definitions';
 import { API_PATHS } from '../../Config/apiConfig';
+import { setDemoFormValues, DEMO_MODE, demoData } from '../../Utils/demoData';
 
 export const VerificationReportComponent = (props: { translator: i18n }) => {
   const [countries, setCountries] = useState<[]>([]);
@@ -58,6 +59,22 @@ export const VerificationReportComponent = (props: { translator: i18n }) => {
       setSelectedVersion(versions[0]);
     }
   }, [versions]);
+
+  // Auto-fill Verification Report with demo data for customer presentations
+  useEffect(() => {
+    if (DEMO_MODE && mode === FormMode.CREATE) {
+      setTimeout(() => {
+        const moment = require('moment');
+        form.setFieldsValue({
+          ...demoData.verificationReport,
+          // Set date fields as moment objects
+          b_completionDate: moment().add(15, 'days'), // 15 days from now
+          siteInspectionDurationStart: moment().subtract(5, 'days'), // 5 days ago
+          siteInspectionDurationEnd: moment().subtract(4, 'days'), // 4 days ago
+        });
+      }, 1000);
+    }
+  }, [mode]);
 
   const getCountryList = async () => {
     const response = await get(API_PATHS.COUNTRY_LIST);

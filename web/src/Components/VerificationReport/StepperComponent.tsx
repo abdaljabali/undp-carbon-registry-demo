@@ -49,6 +49,7 @@ import { INF_SECTORAL_SCOPE } from "../AddNewProgramme/ProgrammeCreationComponen
 import { toMoment } from "../../Utils/convertTime";
 import { safeClone } from "../../Utils/deepCopy";
 import { defaultTimeout } from "../../Definitions/Constants/defaultTimeout";
+import { DEMO_MODE, demoData } from "../../Utils/demoData";
 
 const StepperComponent = (props: VerificationStepProps) => {
   const { translator, t } = props;
@@ -112,6 +113,58 @@ const StepperComponent = (props: VerificationStepProps) => {
   const navigateToDetailsPage = () => {
     navigate(ROUTES.PROGRAMME_DETAILS_BY_ID(String(id)));
   };
+
+  // Auto-fill Verification Report with demo data for customer presentations
+  useEffect(() => {
+    if (DEMO_MODE && state?.mode === FormMode.CREATE) {
+      setTimeout(() => {
+        const verificationDemoData = {
+          ...demoData.verificationReport,
+          // Convert date fields to moment objects
+          b_completionDate: moment().add(30, 'days'),
+          siteInspectionDurationStart: moment().subtract(14, 'days'),
+          siteInspectionDurationEnd: moment().subtract(12, 'days'),
+          // Convert FAR date fields to moment objects (with safe checks)
+          ...(demoData.verificationReport.farIdDate && {
+            farIdDate: moment(demoData.verificationReport.farIdDate, 'YYYY-MM-DD')
+          }),
+          ...(demoData.verificationReport.responseDate && {
+            responseDate: moment(demoData.verificationReport.responseDate, 'YYYY-MM-DD')
+          }),
+          ...(demoData.verificationReport.doeDate && {
+            doeDate: moment(demoData.verificationReport.doeDate, 'YYYY-MM-DD')
+          }),
+          // Convert date strings in arrays to moment objects
+          onSiteInspection: demoData.verificationReport.onSiteInspection?.map((item: any) => ({
+            ...item,
+            activityPerformedDate: moment(item.activityPerformedDate, 'YYYY-MM-DD')
+          })) || [],
+          interviewees: demoData.verificationReport.interviewees?.map((item: any) => ({
+            ...item,
+            date: moment(item.date, 'YYYY-MM-DD')
+          })) || [],
+        };
+        
+        console.log('DEMO: Setting verification demo data', verificationDemoData);
+        console.log('DEMO: farIdDate =', verificationDemoData.farIdDate);
+        console.log('DEMO: responseDate =', verificationDemoData.responseDate);
+        console.log('DEMO: doeDate =', verificationDemoData.doeDate);
+        
+        // Set demo data on all forms
+        basicInformationForm.setFieldsValue(verificationDemoData);
+        ghgProjectDescriptionForm.setFieldsValue(verificationDemoData);
+        executiveSummaryForm.setFieldsValue(verificationDemoData);
+        verficationTeamForm.setFieldsValue(verificationDemoData);
+        applicationOfMeterialityForm.setFieldsValue(verificationDemoData);
+        meansOfVerificationForm.setFieldsValue(verificationDemoData);
+        verificationFindingForm.setFieldsValue(verificationDemoData);
+        internalQualityControlForm.setFieldsValue(verificationDemoData);
+        verificationOpinionForm.setFieldsValue(verificationDemoData);
+        certificationStatementForm.setFieldsValue(verificationDemoData);
+        appendixForm.setFieldsValue(verificationDemoData);
+      }, 1500);
+    }
+  }, [state?.mode]);
 
   const fetchAndSetData = async (programId: any) => {
     setLoading(true);

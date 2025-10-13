@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { Menu, Layout, MenuProps } from "antd";
-import sliderLogo from "../../Assets/Images/logo-slider.png";
+import sliderLogo from "../../Assets/Images/tnd-logo.png";
 import { Link, useNavigate, useLocation } from "react-router-dom";
 import "./layout.sider.scss";
 import * as Icon from "react-bootstrap-icons";

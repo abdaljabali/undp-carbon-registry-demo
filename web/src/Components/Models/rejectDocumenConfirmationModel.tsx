@@ -1,6 +1,7 @@
 import { Alert, Form, Modal, Button, Input } from 'antd';
 import React, { FC, useEffect, useState } from 'react';
 import '../../Styles/app.scss';
+import { DEMO_MODE } from '../../Utils/demoData';
 const { TextArea } = Input;
 
 export interface RejectDocumentationProps {
@@ -30,7 +31,12 @@ export const RejectDocumentationConfirmationModel: FC<RejectDocumentationProps> 
   const [comment, setComment] = useState<any>('');
 
   useEffect(() => {
-    setComment('');
+    if (DEMO_MODE && openModal) {
+      // Auto-fill rejection remarks for demo
+      setComment('This is a demo rejection. In production, specific reasons would be provided for any rejections to help improve project quality.');
+    } else {
+      setComment('');
+    }
   }, [openModal]);
 
   return (
@@ -67,7 +73,7 @@ export const RejectDocumentationConfirmationModel: FC<RejectDocumentationProps> 
             },
           ]}
         >
-          <TextArea defaultValue={comment} rows={2} onChange={(v) => setComment(v.target.value)} />
+          <TextArea value={comment} rows={2} onChange={(v) => setComment(v.target.value)} />
         </Form.Item>
 
         {errorMsg ? <Alert className="mg-top-1" message={errorMsg} type="error" showIcon /> : ''}

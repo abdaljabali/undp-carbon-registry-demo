@@ -125,7 +125,9 @@ export const handler: Handler = async (event) => {
       fields = fields.map((f) => f.trim());
       // (name: string, companyRole: CompanyRole, taxId: string, password: string, email: string, userRole: string
       const cr =
-        fields[4] == "IC"
+        fields[4] == "DNA"
+          ? CompanyRole.DESIGNATED_NATIONAL_AUTHORITY
+          : fields[4] == "IC"
           ? CompanyRole.INDEPENDENT_CERTIFIER
           : fields[4] == "API"
           ? CompanyRole.API

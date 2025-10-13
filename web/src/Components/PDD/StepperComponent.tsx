@@ -40,6 +40,7 @@ import { INF_SECTORAL_SCOPE } from '../AddNewProgramme/ProgrammeCreationComponen
 import { toMoment } from '../../Utils/convertTime';
 import { safeClone } from '../../Utils/deepCopy';
 import { defaultTimeout } from '../../Definitions/Constants/defaultTimeout';
+import { setDemoFormValues, DEMO_MODE, demoData } from '../../Utils/demoData';
 
 const CMA_STEPS = {};
 
@@ -185,6 +186,41 @@ const StepperComponent = (props: any) => {
       setLoading(false);
     }
   };
+
+  // Auto-fill PDD form with demo data for customer presentations
+  useEffect(() => {
+    if (DEMO_MODE && state?.mode === FormMode.CREATE) {
+      setTimeout(() => {
+        // Populate ALL PDD forms with demo data including ALL date fields
+        const pddDemoData = {
+          ...demoData.pdd,
+          ...demoData.applicationMethodology,
+          ...demoData.quantificationEmissions,
+          // Date fields as moment objects
+          completionDate: moment().add(30, 'days'), // 30 days from now
+          projectStartDate: moment().add(1, 'months'), // Description of Project Activity - Start Date
+          projectCommisionDate: moment().add(6, 'months'), // Description of Project Activity - Commissioning Date
+          vintage: moment().add(1, 'year'), // Yearly emission reductions - First year
+          emissionsPeriodStart: moment().add(1, 'year'), // Year 1 start
+          emissionsPeriodEnd: moment().add(2, 'years'), // Year 1 end  
+          projectActivityStartDate: moment().add(1, 'months').format('YYYY-MM-DD'), // String format
+          projectCreditingPeriodStartDate: moment().add(2, 'months'), // Moment
+          projectCreditingPeriodEndDate: moment().add(7, 'years'), // 7 years
+          creditingPeriodStart: moment().add(2, 'months'), // Same as crediting period start
+        };
+        
+        // Apply to all 8 form instances (PDD has 10 steps but only 8 forms)
+        form1.setFieldsValue(pddDemoData);  // Basic Information
+        form2.setFieldsValue(pddDemoData);  // Description of Project Activity
+        form3.setFieldsValue(pddDemoData);  // Application of Methodology
+        form4.setFieldsValue(pddDemoData);  // Quantification of Emissions
+        form5.setFieldsValue(pddDemoData);  // Start Date & Crediting Period
+        form6.setFieldsValue(pddDemoData);  // Environmental Impacts
+        form7.setFieldsValue(pddDemoData);  // Local Stakeholder Consultation
+        form8.setFieldsValue(pddDemoData);  // Monitoring & Approval & Appendix
+      }, 1000); // Longer delay for PDD as it has multiple steps
+    }
+  }, [state?.mode]);
 
   useEffect(() => {
     const getViewData = async () => {

@@ -22,6 +22,7 @@ import { isValidateFileType } from "../../Utils/DocumentValidator";
 import { DocType } from "../../Definitions/Enums/document.type";
 import { API_PATHS } from "../../Config/apiConfig";
 import { ROUTES } from "../../Config/uiRoutingConfig";
+import { setDemoFormValues, DEMO_MODE } from "../../Utils/demoData";
 const { Text } = Typography;
 
 export const AddCostQuotationForm = (props: any) => {
@@ -117,10 +118,23 @@ export const AddCostQuotationForm = (props: any) => {
     form.setFieldsValue(tempInialVals);
   };
 
+  // Auto-fill Cost Quotation with demo data for customer presentations
+  useEffect(() => {
+    if (DEMO_MODE && !isView) {
+      setTimeout(() => {
+        setDemoFormValues(form, 'costQuotation');
+        form.setFieldsValue({
+          dateOfIssue: moment(),  // Today
+        });
+        calculateTotalCost();
+      }, 500);
+    }
+  }, []);
+
   useEffect(() => {
     const getViewData = async () => {
       if (isView) {
-        try {
+        try{
           const res = await post("national/programmeSl/getDocLastVersion", {
             programmeId: id,
             docType: "costQuotation",

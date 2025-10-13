@@ -121,6 +121,12 @@ const SiteCheckListComponent = (props: { translator: i18n }) => {
     if (DEMO_MODE) {
       setTimeout(() => {
         setDemoFormValues(form, 'siteChecklist');
+        form.setFieldsValue({
+          date: moment(),  // Today
+          time: moment(),  // Now
+          projectStartDate: moment().add(30, 'days'),  // 30 days from now
+          validationDate: moment(),  // Today
+        });
       }, 500);
     }
   }, []);

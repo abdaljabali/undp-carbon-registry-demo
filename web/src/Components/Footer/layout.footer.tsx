@@ -1,6 +1,6 @@
 import { Col, Divider, Row } from "antd";
 import { useTranslation } from "react-i18next";
-import sliderLogo from "../../Assets/Images/logo-slider.png";
+import sliderLogo from "../../Assets/Images/tnd-logo.png";
 import "./layout.footer.scss";
 import { CcCircle } from "react-bootstrap-icons";
 

@@ -13,7 +13,7 @@ import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import i18next from "i18next";
-import sliderLogo from "../../Assets/Images/logo-slider.png";
+import sliderLogo from "../../Assets/Images/tnd-logo.png";
 import "./termsofUse.scss";
 import LayoutFooter from "../../Components/Footer/layout.footer";
 import { CcCircle } from "react-bootstrap-icons";

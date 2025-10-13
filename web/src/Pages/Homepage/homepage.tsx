@@ -5,7 +5,7 @@ import { Trans, useTranslation } from "react-i18next";
 import i18next from "i18next";
 import { motion } from "framer-motion";
 import { useInView } from "react-intersection-observer";
-import sliderLogo from "../../Assets/Images/logo-slider.png";
+import sliderLogo from "../../Assets/Images/tnd-logo.png";
 import heroImage1 from "../../Assets/Images/homepage_img.png";
 import heroImage2 from "../../Assets/Images/homepage_img2.png"; // Add your second image
 import heroImage3 from "../../Assets/Images/homepage_img3.png"; // Add your third image

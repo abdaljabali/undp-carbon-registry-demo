@@ -361,13 +361,18 @@ export const ProgrammeCreationComponent = (props: any) => {
 
   // Auto-fill form with demo data for customer presentations
   useEffect(() => {
-    if (DEMO_MODE && !id && !state?.record) {
-      // Only auto-fill for new programme creation, not for view/edit
+    if (DEMO_MODE && (state?.mode === null || state?.mode === undefined || state?.mode === FormMode.CREATE)) {
       setTimeout(() => {
         setDemoFormValues(form, 'programme');
-      }, 500); // Small delay to ensure form is ready
+        // Set dates properly as moment objects
+        form.setFieldsValue({
+          startTime: moment().add(1, 'days'),  // Tomorrow
+        });
+        // Trigger sector change to load scopes
+        setSelectedSector('ENERGY');
+      }, 800);
     }
-  }, []);
+  }, [state?.mode]);
 
   useEffect(() => {
     const getViewData = async () => {

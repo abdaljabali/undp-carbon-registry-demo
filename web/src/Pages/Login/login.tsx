@@ -1,7 +1,8 @@
 import { Button, Col, Form, Input, message, Row, Select, Spin } from "antd";
 import React, { FC, Suspense, useContext, useEffect, useState } from "react";
 import "./login.scss";
-import countryLogo from "../../Assets/Images/logo-slider.png";
+import countryLogo from "../../Assets/Images/tnd-logo2.png";
+import logoWhite from "../../Assets/Images/logowhite1.png";
 import { useTranslation } from "react-i18next";
 import i18next from "i18next";
 import { useLocation, useNavigate } from "react-router-dom";
@@ -109,6 +110,9 @@ const Login: FC<LoginPageProps> = (props: LoginPageProps) => {
         <Row>
           <Col md={24} lg={15} flex="auto">
             <div className="login-img-container container-image">
+              <div className="login-logo-upper-left">
+                <img src={logoWhite} alt="logo" />
+              </div>
               <div className="text-ctn">
                 <span>
                   {t("login:heading1")} <br />

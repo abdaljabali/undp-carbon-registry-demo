@@ -40,6 +40,7 @@ import { INF_SECTORAL_SCOPE } from "../AddNewProgramme/ProgrammeCreationComponen
 import { toMoment } from "../../Utils/convertTime";
 import { safeClone } from "../../Utils/deepCopy";
 import { defaultTimeout } from "../../Definitions/Constants/defaultTimeout";
+import { setDemoFormValues, DEMO_MODE, demoData } from "../../Utils/demoData";
 
 export enum ProcessSteps {
   VR_PROJECT_DETAILS = "VR_PROJECT_DETAILS",
@@ -322,6 +323,60 @@ const StepperComponent = (props: any) => {
       return { ...prevVal, data: tempContent };
     });
   };
+
+  // Auto-fill Validation Report with demo data for customer presentations
+  useEffect(() => {
+    if (DEMO_MODE && state?.mode === FormMode.CREATE) {
+      setTimeout(() => {
+        const validationDemoData = {
+          ...demoData.validationReport,
+          // Set ALL date fields as moment objects (CRITICAL FIX!)
+          completionDate: moment().add(30, 'days'),  // 30 days from now
+          pddUploadedGlobalStakeholderConsultation: moment().subtract(30, 'days'),  // 30 days ago
+          creditingPeriodStart: moment().add(2, 'months'),  // Crediting period start
+          creditingPeriodEnd: moment().add(7, 'years'),  // Crediting period end (7 years)
+          siteInspectionDurationStart: moment().subtract(15, 'days'),  // 15 days ago
+          siteInspectionDurationEnd: moment().subtract(14, 'days'),  // 14 days ago
+          // CL/CAR/FAR date fields (for Appendix)
+          cl_date: moment().subtract(10, 'days'),
+          cl_projectParticipantResponseDate: moment().subtract(8, 'days'),
+          cl_doeAssesmentDate: moment().subtract(5, 'days'),
+          car_date: moment().subtract(10, 'days'),
+          car_projectParticipantResponseDate: moment().subtract(8, 'days'),
+          car_doeAssesmentDate: moment().subtract(5, 'days'),
+          far_date: moment().subtract(10, 'days'),
+          far_projectParticipantResponseDate: moment().subtract(8, 'days'),
+          far_doeAssesmentDate: moment().subtract(5, 'days'),
+          // Convert vintage strings to moment objects
+          estimatedNetEmissionReductions: demoData.validationReport.estimatedNetEmissionReductions?.map((item: any) => ({
+            ...item,
+            vintage: moment({ year: parseInt(item.vintage), month: 0, day: 1 }),
+          })),
+          // Convert onSiteInspection date strings to moment objects
+          onSiteInspection: demoData.validationReport.onSiteInspection?.map((item: any) => ({
+            ...item,
+            date: moment().subtract(15, 'days'),
+          })),
+          // Convert interviewees date strings to moment objects
+          interviewees: demoData.validationReport.interviewees?.map((item: any) => ({
+            ...item,
+            date: moment().subtract(10, 'days'),
+          })),
+        };
+        
+        // Apply to ALL validation report forms (all 9 steps)
+        form1.setFieldsValue(validationDemoData);  // Basic Information
+        form2.setFieldsValue(validationDemoData);  // GHG Project Description
+        form3.setFieldsValue(validationDemoData);  // Executive Summary
+        form4.setFieldsValue(validationDemoData);  // Validation Team
+        form5.setFieldsValue(validationDemoData);  // Means of Validation
+        form6.setFieldsValue(validationDemoData);  // Validation Findings
+        form7.setFieldsValue(validationDemoData);  // Internal Quality Control
+        form8.setFieldsValue(validationDemoData);  // Validation Opinion
+        form9.setFieldsValue(validationDemoData);  // Appendix
+      }, 1000);
+    }
+  }, [state?.mode]);
 
   useEffect(() => {
     if (state?.mode === FormMode?.CREATE) {

@@ -9,6 +9,8 @@ import { FormMode } from '../../Definitions/Enums/formMode.enum';
 import { getDocumentStatusColor } from '../../Definitions/Definitions/programme.definitions';
 import { API_PATHS } from '../../Config/apiConfig';
 import { i18n } from 'i18next';
+import { DEMO_MODE, demoData } from '../../Utils/demoData';
+import moment from 'moment';
 
 export const MonitoringReportComponent = (props: { translator: i18n }) => {
   const [countries, setCountries] = useState<[]>([]);
@@ -55,6 +57,8 @@ export const MonitoringReportComponent = (props: { translator: i18n }) => {
       setSelectedVersion(versions[0]);
     }
   }, [versions]);
+
+  // Demo data auto-filling is now handled in StepperComponent
 
   // const getCountryList = async () => {
   //   const response = await get(API_PATHS.COUNTRY_LIST);

@@ -156,6 +156,9 @@ const ValidationAgreement = (props: { translator: i18n }) => {
     if (DEMO_MODE && !isView) {
       setTimeout(() => {
         setDemoFormValues(form, 'validationAgreement');
+        form.setFieldsValue({
+          dateOfIssue: moment(),  // Today
+        });
       }, 500);
     }
   }, []);

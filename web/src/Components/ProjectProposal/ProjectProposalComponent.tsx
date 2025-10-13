@@ -210,6 +210,13 @@ const ProjectProposalComponent = (props: { translator: i18n }) => {
     if (DEMO_MODE && !isView) {
       setTimeout(() => {
         setDemoFormValues(form, 'projectProposal');
+        form.setFieldsValue({
+          dateOfIssue: moment(),  // Today
+          dateOfRevision: moment(),  // Today
+          validityPeriod: moment().add(60, 'months'),  // 60 months from now
+          projectPlanActivity01StartDate: moment().add(1, 'month'),
+          projectPlanActivity01EndDate: moment().add(12, 'months'),
+        });
       }, 500);
     }
   }, []);

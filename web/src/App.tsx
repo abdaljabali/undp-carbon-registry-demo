@@ -112,7 +112,8 @@ const App = () => {
                   <Route path="codeconduct" element={<CodeOfConduct />} />
                   <Route path="cookie" element={<CookiePolicy />} />
                   <Route path="terms" element={<TermsOfUse />} />
-                  <Route path="/" element={<Homepage />} />
+                  <Route path="/homepage" element={<Homepage />} />
+                  <Route path="/" element={<Navigate to="/login" replace />} />
                   <Route path="/" element={<PrivateRoute />}>
                     <Route
                       path="/dashboard"

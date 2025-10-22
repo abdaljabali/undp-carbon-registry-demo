@@ -7,13 +7,6 @@
   overflow-x: hidden;
   background-color: variables.$outside-background-color;
 
-  .ant-col {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    min-height: 100vh;
-  }
-
   .title {
     font-family: "MuseoSans";
     font-size: 0.7rem;
@@ -106,21 +99,8 @@
       top: 2rem;
       left: 2rem;
       z-index: 10;
-      display: flex;
-      align-items: center;
-      gap: 1rem;
 
-      .undp-logo {
-        height: auto;
-        width: 80px;
-        object-fit: contain;
-
-        @media (max-width: variables.$lg-size) {
-          width: 60px;
-        }
-      }
-
-      .tnd-logo {
+      img {
         height: auto;
         width: 150px;
         object-fit: contain;
@@ -154,10 +134,9 @@
     align-items: center;
     display: flex;
     cursor: pointer;
-    margin-bottom: 1vh;
 
     img {
-      margin-top: 0;
+      margin-top: 20px;
       object-fit: cover;
       height: auto;
       width: 3.7rem;
@@ -182,7 +161,7 @@
   .login-text-contents {
     display: flex;
     flex-direction: column;
-    margin-top: 2vh;
+    margin-top: 5vh;
 
     @media (max-width: variables.$lg-size) {
       text-align: center;
@@ -242,8 +221,8 @@
   }
 
   .login-input-fields-container {
-    margin-top: 2vh;
-    height: auto;
+    margin-top: 3vh;
+    height: 15vh;
 
     .confirm-password {
       .ant-form-item-explain-error {
